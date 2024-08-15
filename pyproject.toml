@@ -9,6 +9,7 @@ dependencies = [
     "rich>=13.7.1",
     "ollama>=0.3.1",
     "click>=8.1.7",
+    "litellm>=1.43.13",
 ]
 requires-python = ">=3.11"
 readme = "README.md"
@@ -31,4 +32,8 @@ dev = [
     "towncrier>=24.7.1",
     "ruff>=0.5.7",
     "coverage>=7.6.1",
+    "isort>=5.13.2",
 ]
+
+[project.scripts]
+bb7 = "bb7.cli:main"
