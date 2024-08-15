@@ -1,8 +1,7 @@
+import ollama
 from rich.console import Console
 from rich.prompt import Prompt
 from rich.text import Text
-
-import ollama
 
 # 初始化 console 對象
 console = Console()
@@ -36,16 +35,19 @@ def chat_terminal():
                 console.print("[bold red]Exiting chat...[/bold red]")
                 break
 
-            # 聊天機器人的回覆   
-            response = ollama.chat(model='llama3.1', messages=[
-                {
-                    'role': 'user',
-                    'content': user_input,
-                },
-            ])
+            # 聊天機器人的回覆
+            response = ollama.chat(
+                model="llama3.1",
+                messages=[
+                    {
+                        "role": "user",
+                        "content": user_input,
+                    },
+                ],
+            )
 
             # bot_reply = f"ChatBot: You said '{user_input}'"
-            bot_reply = response['message']['content']
+            bot_reply = response["message"]["content"]
             console.print(Text(bot_reply, style="bold yellow"))
     except KeyboardInterrupt:
         console.print()
@@ -53,9 +55,6 @@ def chat_terminal():
 
 
 # 執行聊天終端
-
-
-
 
 
 if __name__ == "__main__":

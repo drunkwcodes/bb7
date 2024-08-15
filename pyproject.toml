@@ -33,6 +33,7 @@ dev = [
     "ruff>=0.5.7",
     "coverage>=7.6.1",
     "isort>=5.13.2",
+    "ipython>=8.26.0",
 ]
 
 [project.scripts]
