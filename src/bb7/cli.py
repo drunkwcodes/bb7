@@ -16,18 +16,18 @@ def main(chat):
         print("bb7 is a TDD coding bot. It can recognize the Python project structure,")
         print("find the tests folder, and run tests. It can also chat with a chatbot.")
 
-    # 1. start to write tests
-    write_test_file()
-    # 2. run pytest, check if all tests pass.
-    result = run_tests()
-    # 3. write code
-    retries = 0
-    while result != 0 and retries < MAX_RETIES:
-        retries += 1
-        print(f"Test failed. Retrying ({retries}/{MAX_RETIES})...")
-        write_code()
+        # 1. start to write tests
+        write_test_file()
+        # 2. run pytest, check if all tests pass.
+        result = run_tests()
+        # 3. write code
+        retries = 0
+        while result != 0 and retries < MAX_RETIES:
+            retries += 1
+            print(f"Test failed. Retrying ({retries}/{MAX_RETIES})...")
+            write_code()
 
-    # loop 2.
+        # loop 2.
 
 
 if __name__ == "__main__":

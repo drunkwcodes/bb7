@@ -31,9 +31,14 @@ def chat_terminal():
             user_input = Prompt.ask("[bold blue]>>[/bold blue]")
 
             # 檢查是否是退出命令
-            if user_input.lower() in ["/exit", "/quit", "/q"]:
-                console.print("[bold red]Exiting chat...[/bold red]")
-                break
+            if user_input[0] == '/':
+
+                if user_input.lower() in ["/exit", "/quit", "/q"]:
+                    console.print("[bold red]Exiting chat...[/bold red]")
+                    break
+                else:
+                    console.print("[bold red]Invalid command[/bold red]")
+                    continue
 
             # 聊天機器人的回覆
             response = ollama.chat(
