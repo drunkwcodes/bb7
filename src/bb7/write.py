@@ -1,12 +1,12 @@
 # 1. write tests
 # 2. write code
 
-import importlib.util
-import inspect
-import os
-from logging import Logger
 
-logger = Logger("write")
+import os
+import logging
+import pytest
+
+logger = logging.getLogger("write")
 
 
 def write_test_file():
@@ -45,8 +45,21 @@ def write_test_file():
                 logger.info(f"Generated test file for {module_name}: {test_file_path}")
 
 
-def write_code():
-    pass
+
+
+
+def get_docstring(func: str) -> str:
+    # Use pytest collect test functions' docstring
+    item = pytest.Item.from_parent(name=func, parent=pytest.Function(func))
+    return item.obj.__doc__
+    
+
+
+def write_code(func_name: str):
+    # 1. get the docstring
+    get_docstring()
+    # 2. write code based on the tests' docstring
+    
 
 
 if __name__ == "__main__":

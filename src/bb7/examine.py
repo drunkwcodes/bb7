@@ -3,6 +3,10 @@
 # 3. Run the tests
 
 import os
+import pytest
+import logging
+
+logger = logging.getLogger("examine")
 
 
 def examine_folders():
@@ -19,4 +23,26 @@ def examine_folders():
 
 
 def run_tests():
-    pass
+    ret = pytest.main(["tests"])
+    if ret == pytest.ExitCode.OK:
+        return 0
+    elif ret == pytest.ExitCode.TESTS_FAILED:
+        logger.info("Test failed")
+        return 1
+    
+    elif ret == pytest.ExitCode.INTERRUPTED:
+        logger.warn("Test interrupted")
+        return 1
+    elif ret == pytest.ExitCode.INTERNAL_ERROR:
+        logger.warn("Test internal error")
+        return 1
+    elif ret == pytest.ExitCode.USAGE_ERROR:
+        logger.warn("pytest is misused.")
+        return 1
+    elif ret == pytest.ExitCode.NO_TESTS_COLLECTED:
+        logger.info("No tests collected")
+        return 1
+
+
+
+
