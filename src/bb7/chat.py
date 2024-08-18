@@ -25,8 +25,9 @@ def chat_terminal():
     """
     console.print("[bold green]Welcome to the Chat Terminal![/bold green]")
 
-    try:
-        while True:
+    
+    while True:
+        try:    
             # 使用 Prompt 讓用戶輸入訊息
             user_input = Prompt.ask("[bold blue]>>[/bold blue]")
 
@@ -54,9 +55,13 @@ def chat_terminal():
             # bot_reply = f"ChatBot: You said '{user_input}'"
             bot_reply = response["message"]["content"]
             console.print(Text(bot_reply, style="bold yellow"))
-    except KeyboardInterrupt:
-        console.print()
-        console.print("[bold red]Exiting chat...[/bold red]")
+        except KeyboardInterrupt:
+            console.print("[bold red]Keyboard interrupt[/bold red]")
+            continue
+
+        except EOFError:
+            console.print("[bold red]Exiting chat...[/bold red]")
+            break
 
 
 # 執行聊天終端
