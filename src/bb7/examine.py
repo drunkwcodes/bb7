@@ -3,6 +3,7 @@
 # 3. Run the tests
 
 import os
+import pytest
 
 
 def examine_folders():
@@ -19,4 +20,4 @@ def examine_folders():
 
 
 def run_tests():
-    pass
+    return pytest.main()
