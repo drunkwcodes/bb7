@@ -20,6 +20,8 @@ def examine_folders():
 
 
 def run_tests():
-    current_dir = os.getcwd()
+    # current_dir = os.getcwd()
     # print(current_dir)
-    return pytest.main([current_dir])
+    
+    # return pytest.main([current_dir])
+    return pytest.main()
