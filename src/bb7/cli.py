@@ -27,6 +27,7 @@ def main(chat):
             retries += 1
             print(f"Test failed. Retrying ({retries}/{MAX_RETRIES})...")
             write_code()
+            result = run_tests()
 
         # loop 2.
 
