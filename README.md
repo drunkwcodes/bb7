@@ -7,4 +7,8 @@ A TDD coding bot using ollama
 pipx install bb7
 ```
 
+Chat:
 
+```
+bb7 -c
+```
