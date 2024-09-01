@@ -2,9 +2,9 @@ import click
 
 from .chat import chat_terminal
 from .examine import run_tests
-from .write import write_code, write_test_file
+from .write import write_code, write_test_file, write_all_tests
 
-MAX_RETIES = 10
+MAX_RETRIES = 10
 
 
 @click.command(context_settings=dict(help_option_names=["-h", "--help"]))
@@ -18,13 +18,14 @@ def main(chat):
 
         # 1. start to write tests
         write_test_file()
+        write_all_tests()
         # 2. run pytest, check if all tests pass.
         result = run_tests()
         # 3. write code
         retries = 0
-        while result != 0 and retries < MAX_RETIES:
+        while result != 0 and retries < MAX_RETRIES:
             retries += 1
-            print(f"Test failed. Retrying ({retries}/{MAX_RETIES})...")
+            print(f"Test failed. Retrying ({retries}/{MAX_RETRIES})...")
             write_code()
 
         # loop 2.
