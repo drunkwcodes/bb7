@@ -15,6 +15,10 @@ requires-python = ">=3.11"
 readme = "README.md"
 license = {text = "MIT"}
 
+[project.urls]
+Homepage = "https://github.com/drunkwcodes/bb7"
+Issues = "https://github.com/drunkwcodes/bb7/issues"
+
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
