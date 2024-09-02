@@ -12,3 +12,18 @@ Chat:
 ```
 bb7 -c
 ```
+
+```
+Usage: bb7 [OPTIONS]
+
+Options:
+  -c, --chat
+  -h, --help  Show this message and exit.
+```
+
+
+```
+bb7 is a TDD coding bot. It can recognize the Python project structure,
+find the tests folder, and run tests. It can also chat with a chatbot.
+The current directory is not in a Python project.
+```
