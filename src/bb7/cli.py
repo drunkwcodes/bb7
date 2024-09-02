@@ -1,9 +1,9 @@
 import click
 
 from .chat import chat_terminal
-from .examine import run_tests, examine_folders
-from .write import write_code, write_test_file, write_all_tests
-from .utils import find_project_root, cd
+from .examine import examine_folders, run_tests
+from .utils import cd, find_project_root
+from .write import write_all_tests, write_code, write_test_file
 
 MAX_RETRIES = 10
 
@@ -22,7 +22,6 @@ def main(chat):
             proot = find_project_root()
         else:
             proot = "."
-            
 
         if proot is None:
             print("The current directory is not in a Python project.")

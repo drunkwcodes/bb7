@@ -1,11 +1,11 @@
 # 1. write tests
 # 2. write code
 
+import ast
 import importlib.util
 import inspect
-import os
 import logging
-import ast
+import os
 from pathlib import Path
 
 logger = logging.getLogger("write")
@@ -46,20 +46,20 @@ def write_test_file():
 
 
 def get_functions_and_classes(file_path):
-    with open(file_path, 'r', encoding='utf-8') as file:
+    with open(file_path, "r", encoding="utf-8") as file:
         file_content = file.read()
 
-    
     tree = ast.parse(file_content)
 
-
-    functions = [node.name for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)]
+    functions = [
+        node.name for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)
+    ]
     classes = [node.name for node in ast.walk(tree) if isinstance(node, ast.ClassDef)]
 
     return functions, classes
 
 
-def write_tests(test_file_path, module_name: str | None=None):
+def write_tests(test_file_path, module_name: str | None = None):
     # TODO: battle test this
     module_name = module_name or Path(test_file_path).relative_to("./tests")
     # print(module_name)
@@ -72,11 +72,12 @@ def write_tests(test_file_path, module_name: str | None=None):
     test_functions = list(map(lambda func_name: f"test_{func_name}", functions))
     test_classes = list(map(lambda class_name: f"Test{class_name}", classes))
 
-
     # 2. write the test if not exists
-    test_original_functions, test_origninal_classes = get_functions_and_classes(test_file_path)
+    test_original_functions, test_origninal_classes = get_functions_and_classes(
+        test_file_path
+    )
 
-    with open(test_file_path, 'a', encoding='utf-8') as file:
+    with open(test_file_path, "a", encoding="utf-8") as file:
         for f in test_functions:
             if f not in test_original_functions:
                 file.write(f"def {f}():\n    pass\n\n")
@@ -85,15 +86,13 @@ def write_tests(test_file_path, module_name: str | None=None):
             if c not in test_origninal_classes:
                 file.write(f"class {c}:\n    pass\n\n")
 
+
 def write_all_tests():
     for root, dirs, files in os.walk("./tests"):
         for file in files:
             if file.endswith(".py") and file != "test_template.py":
                 test_file_path = os.path.join(root, file)
                 write_tests(test_file_path)
-
-
-
 
 
 def write_code():

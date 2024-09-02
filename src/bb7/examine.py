@@ -3,6 +3,7 @@
 # 3. Run the tests
 
 import os
+
 import pytest
 
 
@@ -22,6 +23,6 @@ def examine_folders():
 def run_tests():
     # current_dir = os.getcwd()
     # print(current_dir)
-    
+
     # return pytest.main([current_dir])
     return pytest.main()

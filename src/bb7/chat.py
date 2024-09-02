@@ -25,14 +25,13 @@ def chat_terminal():
     """
     console.print("[bold green]Welcome to the Chat Terminal![/bold green]")
 
-    
     while True:
-        try:    
+        try:
             # 使用 Prompt 讓用戶輸入訊息
             user_input = Prompt.ask("[bold blue]>>[/bold blue]")
 
             # 檢查是否是退出命令
-            if user_input[0] == '/':
+            if user_input[0] == "/":
 
                 if user_input.lower() in ["/exit", "/quit", "/q"]:
                     console.print("[bold red]Exiting chat...[/bold red]")
