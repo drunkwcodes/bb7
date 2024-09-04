@@ -1,5 +1,6 @@
 import contextlib
 import os
+import uuid
 from pathlib import Path
 from typing import Iterator
 
@@ -30,3 +31,7 @@ def find_project_root(cwd: str = ".", max_depth: int = 10) -> str | None:
             break
         path = path.parent
     return None
+
+
+def random_mp3_fname(prefix: str = "bb7") -> str:
+    return f"{prefix}_{uuid.uuid4()}.mp3"

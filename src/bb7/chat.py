@@ -1,10 +1,40 @@
+import os
+
+import gtts
 import ollama
+import pygame
+from gtts import gTTS
+from pygame import mixer
 from rich.console import Console
 from rich.prompt import Prompt
 from rich.text import Text
 
+from .utils import random_mp3_fname
+
 # 初始化 console 對象
 console = Console()
+
+
+def tts(text: str, lang="zh-tw", slow=False, file_name: str | None = None):
+    file_name = file_name or random_mp3_fname()
+    file_path = f"/tmp/{file_name}"
+
+    tts = gTTS(text=text, lang=lang, slow=slow)
+    tts.save(file_path)
+
+    # 初始化 pygame mixer
+    pygame.mixer.init()
+    # 加載 MP3 文件
+    pygame.mixer.music.load(file_path)
+    # 播放音頻
+    pygame.mixer.music.play()
+    # 等待音頻播放完畢
+    while pygame.mixer.music.get_busy():
+        pygame.time.Clock().tick(10)
+    # 停止播放器
+    pygame.mixer.music.stop()
+    # 刪除臨時文件
+    os.remove(file_path)
 
 
 def chat_terminal():
@@ -43,6 +73,14 @@ def chat_terminal():
                 elif user_input.lower() == "/help":
                     show_help()
                     continue
+                elif "/voice" in user_input.lower():
+                    inputs = user_input.split(" ")
+                    if len(inputs) > 1:
+                        lang = inputs[1]
+                    else:
+                        lang = "ja"
+                    tts(bot_reply, lang=lang)
+                    continue
                 else:
                     console.print("[bold red]Invalid command[/bold red]")
                     continue
@@ -75,6 +113,7 @@ def show_help():
     console.print("[bold green]Available commands:[/bold green]")
     console.print("/exit, /quit, /q - Exit the chat")
     console.print("/clear - Clear the screen")
+    console.print("/voice - Voice output last message")
     console.print("/help - Show this help message")
 
 
