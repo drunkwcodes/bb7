@@ -1,10 +1,8 @@
 import os
 
-import gtts
 import ollama
 import pygame
 from gtts import gTTS
-from pygame import mixer
 from rich.console import Console
 from rich.prompt import Prompt
 from rich.text import Text
