@@ -23,7 +23,9 @@ def chat_terminal():
     Returns:
         None
     """
-    console.print("[bold green]Welcome to the Chat Terminal![/bold green]")
+    console.print("[bold green]Welcome to the bb7 Chat Terminal![/bold green]")
+
+    history = []
 
     while True:
         try:
@@ -31,33 +33,36 @@ def chat_terminal():
             user_input = Prompt.ask("[bold blue]>>[/bold blue]")
 
             # 檢查是否是退出命令
-            if user_input[0] == "/":
-
+            if user_input.startswith("/"):
                 if user_input.lower() in ["/exit", "/quit", "/q"]:
                     console.print("[bold red]Exiting chat...[/bold red]")
                     break
+                elif user_input.lower() == "/clear":
+                    console.clear()
+                    continue
+                elif user_input.lower() == "/help":
+                    show_help()
+                    continue
                 else:
                     console.print("[bold red]Invalid command[/bold red]")
                     continue
 
-            # 聊天機器人的回覆
-            response = ollama.chat(
-                model="llama3.1",
-                messages=[
-                    {
-                        "role": "user",
-                        "content": user_input,
-                    },
-                ],
-            )
+            history.append({"role": "user", "content": user_input})
 
-            # bot_reply = f"ChatBot: You said '{user_input}'"
-            bot_reply = response["message"]["content"]
-            console.print(Text(bot_reply, style="bold yellow"))
+            # 聊天機器人的回覆
+            try:
+                response = ollama.chat(
+                    model="llama3.1",
+                    messages=history,
+                )
+                bot_reply = response["message"]["content"]
+                history.append({"role": "assistant", "content": bot_reply})
+                console.print(Text(bot_reply, style="bold yellow"))
+            except Exception as e:
+                console.print(f"[bold red]Error: {str(e)}[/bold red]")
+
         except KeyboardInterrupt:
             console.print("[bold red]Keyboard interrupt[/bold red]")
-            continue
-
         except EOFError:
             console.print("[bold red]Exiting chat...[/bold red]")
             break
@@ -66,14 +71,12 @@ def chat_terminal():
 # 執行聊天終端
 
 
+def show_help():
+    console.print("[bold green]Available commands:[/bold green]")
+    console.print("/exit, /quit, /q - Exit the chat")
+    console.print("/clear - Clear the screen")
+    console.print("/help - Show this help message")
+
+
 if __name__ == "__main__":
-
-    # response = litellm.completion(
-    #     model="ollama/llama3.1",
-    #     messages=[{ "content": "respond in 20 words. who are you?","role": "user"}],
-    #     api_base="http://localhost:11434"
-    # )
-    # print(response)
-    # response.choices[0].message.content
-
     chat_terminal()
