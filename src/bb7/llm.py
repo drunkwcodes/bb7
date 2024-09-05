@@ -1,5 +1,4 @@
 import importlib
-import os
 
 # `import litellm` takes 1.5 seconds, defer it!
 
