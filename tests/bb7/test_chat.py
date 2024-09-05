@@ -22,5 +22,5 @@ def test_show_help():
         mock_print.assert_any_call("[bold green]Available commands:[/bold green]")
         mock_print.assert_any_call("/exit, /quit, /q - Exit the chat")
         mock_print.assert_any_call("/clear - Clear the screen")
-        mock_print.assert_any_call("/voice - Voice output last message")
+        mock_print.assert_any_call("/voice [ja] - Voice output last message")
         mock_print.assert_any_call("/help - Show this help message")

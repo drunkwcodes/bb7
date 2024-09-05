@@ -6,9 +6,10 @@ import logging
 import os
 from pathlib import Path
 
-logging.basicConfig(level=logging.INFO)
+# logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("write")
-# logger.setLevel(logging.INFO)
+logging.debug("foo")
+logger.setLevel(logging.INFO)
 
 
 def write_test_file():
