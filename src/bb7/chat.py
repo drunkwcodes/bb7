@@ -111,7 +111,7 @@ def show_help():
     console.print("[bold green]Available commands:[/bold green]")
     console.print("/exit, /quit, /q - Exit the chat")
     console.print("/clear - Clear the screen")
-    console.print("/voice - Voice output last message")
+    console.print("/voice [ja] - Voice output last message")
     console.print("/help - Show this help message")
 
 
