@@ -8,7 +8,9 @@ import logging
 import os
 from pathlib import Path
 
+logging.basicConfig(level = logging.INFO)
 logger = logging.getLogger("write")
+# logger.setLevel(logging.INFO)
 
 
 def write_test_file():
@@ -81,10 +83,14 @@ def write_tests(test_file_path, module_name: str | None = None):
         for f in test_functions:
             if f not in test_original_functions:
                 file.write(f"def {f}():\n    pass\n\n")
+            else:
+                logger.info(f"Test function already exists: {f}")
 
         for c in test_classes:
             if c not in test_origninal_classes:
                 file.write(f"class {c}:\n    pass\n\n")
+            else:
+                logger.info(f"Test class already exists: {c}")
 
 
 def write_all_tests():
