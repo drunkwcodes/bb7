@@ -1,5 +1,7 @@
 from click.testing import CliRunner
+
 from bb7.cli import main
+
 
 def test_main():
     pass

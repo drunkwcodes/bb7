@@ -71,7 +71,7 @@ def chat_terminal():
                 elif user_input.lower() == "/help":
                     show_help()
                     continue
-                elif "/voice" in user_input.lower():
+                elif "/voice" in user_input.lower() or "/v" in user_input.lower():
                     inputs = user_input.split(" ")
                     if len(inputs) > 1:
                         lang = inputs[1]
