@@ -3,6 +3,10 @@ import os
 import ollama
 import pygame
 from gtts import gTTS
+from platformdirs import user_data_dir
+from prompt_toolkit import PromptSession
+from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
+from prompt_toolkit.history import FileHistory
 from rich.console import Console
 from rich.prompt import Prompt
 from rich.text import Text
@@ -54,11 +58,16 @@ def chat_terminal():
     console.print("[bold green]Welcome to the bb7 Chat Terminal![/bold green]")
 
     history = []
+    bb7_dir = user_data_dir(appname="bb7", appauthor="drunkwcodes")
+    history_file = bb7_dir + "/chat_history.txt"
+    os.makedirs(bb7_dir, exist_ok=True)
+    session = PromptSession(history=FileHistory(history_file))
 
     while True:
         try:
             # 使用 Prompt 讓用戶輸入訊息
-            user_input = Prompt.ask("[bold blue]>>[/bold blue]")
+            # user_input = Prompt.ask("[bold blue]>>[/bold blue]")
+            user_input = session.prompt(">> ", auto_suggest=AutoSuggestFromHistory())
 
             # 檢查是否是退出命令
             if user_input.startswith("/"):

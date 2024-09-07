@@ -1,8 +1,21 @@
 # bb7
 A TDD coding bot using ollama
 
-### Installation and Usage
+### Prerequisites
 
+First, install ollama
+
+```
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+And install a model.
+
+```
+ollama run llama3.1
+```
+
+### Installation
 ```
 pipx install bb7
 ```
