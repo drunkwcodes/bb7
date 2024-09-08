@@ -25,4 +25,4 @@ def run_tests():
     # print(current_dir)
 
     # return pytest.main([current_dir])
-    return pytest.main()
+    return pytest.main(args=["--cov=bb7"])

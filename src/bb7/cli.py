@@ -9,14 +9,13 @@ MAX_RETRIES = 10
 
 
 @click.command(context_settings=dict(help_option_names=["-h", "--help"]))
-@click.option("-c", "--chat", is_flag=True)
-def main(chat):
-    if chat:
-        chat_terminal()
-    else:
-        print("bb7 is a TDD coding bot. It can recognize the Python project structure,")
-        print("find the tests folder, and run tests. It can also chat with a chatbot.")
+@click.option("-t", "--test", is_flag=True, help="Run tests and write tests.")
+def main(test):
+    print("bb7 is a TDD coding bot. It can recognize the Python project structure,")
+    print("find the tests folder, and run tests. It can also chat with a chatbot.")
 
+
+    if test:
         proot = None
         if examine_folders() is False:
             proot = find_project_root()
@@ -39,10 +38,12 @@ def main(chat):
                 retries += 1
                 print(f"Test failed. Retrying ({retries}/{MAX_RETRIES})...")
                 write_code()
+                # loop 2.
                 result = run_tests()
 
-            # loop 2.
-
+            
+    else:
+        chat_terminal()
 
 if __name__ == "__main__":
     main()

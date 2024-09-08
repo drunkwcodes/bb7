@@ -23,14 +23,14 @@ pipx install bb7
 Chat:
 
 ```
-bb7 -c
+bb7
 ```
 
 ```
 Usage: bb7 [OPTIONS]
 
 Options:
-  -c, --chat
+  -t, --test  Run tests and write tests.
   -h, --help  Show this message and exit.
 ```
 

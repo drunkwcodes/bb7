@@ -1,6 +1,6 @@
 [project]
 name = "bb7"
-version = "0.3.0"
+version = "0.3.1"
 description = "A TDD coding bot"
 authors = [{ name = "Drunkwcodes", email = "drunkwcodes@gmail.com" }]
 dependencies = [
@@ -12,6 +12,7 @@ dependencies = [
     "pygame>=2.6.0",
     "prompt-toolkit>=3.0.47",
     "platformdirs>=4.3.1",
+    "pytest-cov>=5.0.0",
 ]
 requires-python = ">=3.11"
 readme = "README.md"
