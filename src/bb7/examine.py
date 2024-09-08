@@ -3,8 +3,10 @@
 # 3. Run the tests
 
 import os
-
+from pathlib import Path
 import pytest
+
+from .utils import find_project_root, cd
 
 
 def examine_folders():
@@ -24,5 +26,11 @@ def run_tests():
     # current_dir = os.getcwd()
     # print(current_dir)
 
-    # return pytest.main([current_dir])
-    return pytest.main(args=["--cov=bb7"])
+    proot = find_project_root()
+    with cd(proot):
+        src_path = Path(proot) / "src"
+
+        subfolders = [f.name for f in src_path.iterdir() if f.is_dir()]
+        module_name = subfolders[0]
+
+    return pytest.main(args=[f"--cov={module_name}"])
