@@ -105,6 +105,10 @@ def select_language(conf_file: str):
         elif result == "西班牙文 (Spanish)":
             set_lang(conf_file=conf_file, lang="es")
 
+        elif result is None:
+            print("You canceled the selection.")
+            print("Current language:", get_lang(conf_file=conf_file))
+
         else:
             raise ValueError(f"Invalid language selection: {result}")
 
