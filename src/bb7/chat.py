@@ -98,7 +98,8 @@ def chat_terminal():
             try:
                 response = ollama.chat(
                     # model="llama3.1",
-                    model="llama3.2:1b",
+                    # model="llama3.2:1b",
+                    model="llama3.2",
                     messages=history,
                 )
                 bot_reply = response["message"]["content"]
