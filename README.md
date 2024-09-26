@@ -44,11 +44,13 @@ The current directory is not in a Python project.
 
 ```
 Welcome to the bb7 Chat Terminal!
->>: /help
+>> /help
 Available commands:
 /exit, /quit, /q - Exit the chat
 /clear - Clear the screen
 /voice [ja] - Voice output last message
 /help - Show this help message
->>: 
+>> 
 ```
+
+![](selections.png)
