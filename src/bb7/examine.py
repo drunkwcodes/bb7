@@ -4,9 +4,10 @@
 
 import os
 from pathlib import Path
+
 import pytest
 
-from .utils import find_project_root, cd
+from .utils import cd, find_project_root
 
 
 def examine_folders():

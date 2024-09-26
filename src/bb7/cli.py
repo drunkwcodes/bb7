@@ -14,7 +14,6 @@ def main(test):
     print("bb7 is a TDD coding bot. It can recognize the Python project structure,")
     print("find the tests folder, and run tests. It can also chat with a chatbot.")
 
-
     if test:
         proot = None
         if examine_folders() is False:
@@ -41,9 +40,9 @@ def main(test):
                 # loop 2.
                 result = run_tests()
 
-            
     else:
         chat_terminal()
+
 
 if __name__ == "__main__":
     main()

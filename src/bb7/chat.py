@@ -2,14 +2,17 @@ import os
 
 import ollama
 import pygame
+import tomlkit
 from gtts import gTTS
 from platformdirs import user_data_dir
 from prompt_toolkit import PromptSession
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 from prompt_toolkit.history import FileHistory
+from prompt_toolkit.shortcuts import radiolist_dialog
 from rich.console import Console
 from rich.prompt import Prompt
 from rich.text import Text
+from tomlkit import document, parse
 
 from .utils import random_mp3_fname
 
@@ -39,6 +42,73 @@ def tts(text: str, lang="zh-tw", slow=False, file_name: str | None = None):
     os.remove(file_path)
 
 
+def set_lang(conf_file: str, lang: str):
+    with open(conf_file, "r") as f:
+        doc = parse(f.read())
+
+    doc["voice_language"] = lang
+
+    with open(conf_file, "w") as f:
+        f.write(tomlkit.dumps(doc))
+
+
+def get_lang(conf_file: str):
+    with open(conf_file, "r") as f:
+        doc = parse(f.read())
+
+    return doc["voice_language"]
+
+
+def select_language(conf_file: str):
+    # 定義語言選項
+    languages = [
+        ("中文 (Chinese)", "Chinese"),
+        ("英文 (English)", "English"),
+        ("日文 (Japanese)", "Japanese"),
+        ("韓文 (Korean)", "Korean"),
+        ("法文 (French)", "French"),
+        ("西班牙文 (Spanish)", "Spanish"),
+        ("其他 (Other)", "Other"),
+    ]
+
+    # 使用 radiolist_dialog 顯示選單
+    result = radiolist_dialog(
+        title="語言選單",
+        text="Please select a language for /voice command:",
+        values=languages,
+    ).run()
+
+    # 如果選擇「其他」，讓使用者輸入自訂語言名稱
+    if result == "其他 (Other)":
+        session = PromptSession()
+        custom_language = session.prompt("請輸入自訂語言名稱：")
+        print(f"You selected: {custom_language}")
+        set_lang(conf_file=conf_file, lang=custom_language)
+
+    else:
+        print(f"You selected: {result}")
+        if result == "中文 (Chinese)":
+            set_lang(conf_file=conf_file, lang="zh-tw")
+
+        elif result == "英文 (English)":
+            set_lang(conf_file=conf_file, lang="en")
+
+        elif result == "日文 (Japanese)":
+            set_lang(conf_file=conf_file, lang="ja")
+
+        elif result == "韓文 (Korean)":
+            set_lang(conf_file=conf_file, lang="ko")
+
+        elif result == "法文 (French)":
+            set_lang(conf_file=conf_file, lang="fr")
+
+        elif result == "西班牙文 (Spanish)":
+            set_lang(conf_file=conf_file, lang="es")
+
+        else:
+            raise ValueError(f"Invalid language selection: {result}")
+
+
 def chat_terminal():
     """
     Runs a chat terminal where the user can interact with a simulated chatbot.
@@ -60,6 +130,15 @@ def chat_terminal():
     history = []
     bb7_dir = user_data_dir(appname="bb7", appauthor="drunkwcodes")
     history_file = bb7_dir + "/chat_history.txt"
+
+    conf_file = bb7_dir + "/bb7_config.toml"
+
+    if os.path.exists(conf_file) is False:
+        doc = document()
+        doc.add("voice_language", "ja")
+        with open(conf_file, "w") as f:
+            tomlkit.dump(doc, f)
+
     os.makedirs(bb7_dir, exist_ok=True)
     session = PromptSession(history=FileHistory(history_file))
 
@@ -67,6 +146,7 @@ def chat_terminal():
         try:
             # 使用 Prompt 讓用戶輸入訊息
             # user_input = Prompt.ask("[bold blue]>>[/bold blue]")
+            lang = get_lang(conf_file)
             user_input = session.prompt(">> ", auto_suggest=AutoSuggestFromHistory())
 
             # 檢查是否是退出命令
@@ -84,9 +164,11 @@ def chat_terminal():
                     inputs = user_input.split(" ")
                     if len(inputs) > 1:
                         lang = inputs[1]
-                    else:
-                        lang = "ja"
                     tts(bot_reply, lang=lang)
+                    continue
+
+                elif "/select" in user_input.lower() or "/s" in user_input.lower():
+                    select_language(conf_file=conf_file)
                     continue
                 else:
                     console.print("[bold red]Invalid command[/bold red]")

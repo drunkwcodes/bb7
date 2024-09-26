@@ -1,6 +1,6 @@
 [project]
 name = "bb7"
-version = "0.3.3"
+version = "0.4.0"
 description = "A TDD coding bot"
 authors = [{ name = "Drunkwcodes", email = "drunkwcodes@gmail.com" }]
 dependencies = [
@@ -13,6 +13,7 @@ dependencies = [
     "prompt-toolkit>=3.0.47",
     "platformdirs>=4.3.1",
     "pytest-cov>=5.0.0",
+    "tomlkit>=0.13.2",
 ]
 requires-python = ">=3.11"
 readme = "README.md"
