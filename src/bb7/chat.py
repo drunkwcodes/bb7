@@ -97,7 +97,8 @@ def chat_terminal():
             # 聊天機器人的回覆
             try:
                 response = ollama.chat(
-                    model="llama3.1",
+                    # model="llama3.1",
+                    model="llama3.2:1b",
                     messages=history,
                 )
                 bot_reply = response["message"]["content"]
