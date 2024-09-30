@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 import ollama
 import pygame
@@ -8,12 +9,20 @@ from platformdirs import user_data_dir
 from prompt_toolkit import PromptSession
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 from prompt_toolkit.history import FileHistory
-from prompt_toolkit.shortcuts import radiolist_dialog
+from prompt_toolkit.shortcuts import radiolist_dialog, yes_no_dialog
 from rich.console import Console
 from rich.prompt import Prompt
 from rich.text import Text
 from tomlkit import document, parse
 
+from .rag import (
+    Collection,
+    ask,
+    create_index,
+    init_db,
+    load_markdown_documents,
+    update_index,
+)
 from .utils import random_mp3_fname
 
 # 初始化 console 對象
@@ -113,6 +122,70 @@ def select_language(conf_file: str):
             raise ValueError(f"Invalid language selection: {result}")
 
 
+def load_document():  
+    """
+    Load documents from a given path into the database, and create an index
+    for the collection. If the collection already exists, update the index
+    instead.
+
+    Prompts the user to input the document path and collection name.
+
+    Returns the collection name.
+    """
+    session = PromptSession()
+    doc_path = session.prompt("Enter the document path：")
+    doc_collection_name = session.prompt("Enter the collection name：")
+
+    collection = Collection.get_or_none(Collection.name == doc_collection_name)
+    if collection is None:
+        collection = Collection(name=doc_collection_name, path=doc_path)
+        collection.save()
+        create_index(
+            collection_name=doc_collection_name,
+            documents=load_markdown_documents(doc_path),
+        )
+    else:
+        collection.path = doc_path
+        collection.updated = datetime.now()
+        collection.save()
+        update_index(
+            collection_name=doc_collection_name,
+            documents=load_markdown_documents(doc_path),
+        )
+
+    return doc_collection_name
+
+
+def choose_collection():
+    collections = Collection.select(Collection.name).order_by(Collection.updated.desc())
+
+    choices = [(collection.name, collection.name) for collection in collections]
+    if len(choices) == 0:
+        print("No collections found.")
+        return
+
+    result = radiolist_dialog(
+        title="Select a Collection", text="Please choose a collection:", values=choices
+    ).run()
+    print(f"You activated: {result}")
+    return result
+
+
+def normal_chat(chat_history):
+    try:
+        response = ollama.chat(
+            # model="llama3.1",
+            # model="llama3.2:1b",
+            model="llama3.2",
+            messages=chat_history,
+        )
+        bot_reply = response["message"]["content"]
+    except Exception as e:
+        console.print(f"[bold red]Error: {str(e)}[/bold red]")
+
+    return bot_reply
+
+
 def chat_terminal():
     """
     Runs a chat terminal where the user can interact with a simulated chatbot.
@@ -136,28 +209,51 @@ def chat_terminal():
     history_file = bb7_dir + "/chat_history.txt"
 
     conf_file = bb7_dir + "/bb7_config.toml"
-
+    os.makedirs(bb7_dir, exist_ok=True)
+    # Write default config file if it doesn't exist
     if os.path.exists(conf_file) is False:
         doc = document()
         doc.add("voice_language", "ja")
         with open(conf_file, "w") as f:
             tomlkit.dump(doc, f)
 
-    os.makedirs(bb7_dir, exist_ok=True)
     session = PromptSession(history=FileHistory(history_file))
-
+    activated = ""
     while True:
         try:
             # 使用 Prompt 讓用戶輸入訊息
             # user_input = Prompt.ask("[bold blue]>>[/bold blue]")
             lang = get_lang(conf_file)
-            user_input = session.prompt(">> ", auto_suggest=AutoSuggestFromHistory())
+            user_input = session.prompt(
+                activated + ">> ", auto_suggest=AutoSuggestFromHistory()
+            )
 
-            # 檢查是否是退出命令
+            # 檢查是否使用命令
             if user_input.startswith("/"):
                 if user_input.lower() in ["/exit", "/quit", "/q"]:
                     console.print("[bold red]Exiting chat...[/bold red]")
                     break
+                elif "/activate" in user_input.lower() or "/a" in user_input.lower():
+                    doc_name = choose_collection()
+                    if doc_name is not None:
+                        activated = f"({doc_name})"
+                    continue
+
+                elif "/deactivate" in user_input.lower() or "/d" in user_input.lower():
+                    activated = ""
+                    continue
+
+                elif "/load" in user_input.lower() or "/l" in user_input.lower():
+                    doc_name = load_document()
+                    # 創建 y/n 提示框
+                    want_to_activate = yes_no_dialog(
+                        title="Confirmation",
+                        text="Do you want to activate the document?",
+                    ).run()
+                    if want_to_activate:
+                        activated = f"({doc_name})"
+                    continue
+
                 elif user_input.lower() == "/clear":
                     console.clear()
                     continue
@@ -178,22 +274,17 @@ def chat_terminal():
                     console.print("[bold red]Invalid command[/bold red]")
                     continue
 
+            # start to chat
             history.append({"role": "user", "content": user_input})
 
             # 聊天機器人的回覆
-            try:
-                response = ollama.chat(
-                    # model="llama3.1",
-                    # model="llama3.2:1b",
-                    model="llama3.2",
-                    messages=history,
-                )
-                bot_reply = response["message"]["content"]
-                history.append({"role": "assistant", "content": bot_reply})
-                console.print(Text(bot_reply, style="bold yellow"))
-            except Exception as e:
-                console.print(f"[bold red]Error: {str(e)}[/bold red]")
+            if activated != "":  # if activated documents
+                bot_reply = ask(user_input, collection_name=doc_name)
+            else:
+                bot_reply = normal_chat(history)
 
+            history.append({"role": "assistant", "content": bot_reply})
+            console.print(Text(bot_reply, style="bold yellow"))
         except KeyboardInterrupt:
             console.print("[bold red]Keyboard interrupt[/bold red]")
         except EOFError:
