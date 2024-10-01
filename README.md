@@ -1,5 +1,12 @@
 # bb7
-A TDD coding bot using ollama
+
+![](bb7_logo.png)
+
+
+
+A TDD coding bot using ollama.
+
+Introducing "bb7", an advanced chat bot designed for versatile interactions. Equipped with TTS (Text-to-Speech) capabilities, bb7 enables seamless voice conversations with users. It also supports local Retrieval-Augmented Generation (RAG), allowing for efficient document-based queries and responses, even without cloud dependency.
 
 ### Prerequisites
 
@@ -48,7 +55,11 @@ Welcome to the bb7 Chat Terminal!
 Available commands:
 /exit, /quit, /q - Exit the chat
 /clear - Clear the screen
-/voice [ja] - Voice output last message
+/voice  - Voice output last message
+/select - Select voice language
+/activate - Activate a document
+/deactivate - Deactivate a document
+/load - Load a document
 /help - Show this help message
 >> 
 ```

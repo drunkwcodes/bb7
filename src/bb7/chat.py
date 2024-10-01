@@ -300,6 +300,10 @@ def show_help():
     console.print("/exit, /quit, /q - Exit the chat")
     console.print("/clear - Clear the screen")
     console.print("/voice [ja] - Voice output last message")
+    console.print("/select - Select voice language")
+    console.print("/activate - Activate a document")
+    console.print("/deactivate - Deactivate a document")
+    console.print("/load - Load a document")
     console.print("/help - Show this help message")
 
 
