@@ -1,6 +1,6 @@
 [project]
 name = "bb7"
-version = "0.5.0"
+version = "0.5.1"
 description = "A TDD coding bot"
 authors = [{ name = "Drunkwcodes", email = "drunkwcodes@gmail.com" }]
 dependencies = [
