@@ -100,7 +100,7 @@ def load_index(collection_name: str, db_path: str | None = None):
     db_path = db_path or CHROMA_DB_PATH
     db = chromadb.PersistentClient(path=db_path)
     chroma_collection = db.get_or_create_collection(collection_name)
-    embed_model = HuggingFaceEmbedding()
+    embed_model = HuggingFaceEmbedding(device="cpu")
     vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
     index = VectorStoreIndex.from_vector_store(
         vector_store,
