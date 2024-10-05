@@ -122,7 +122,7 @@ def select_language(conf_file: str):
             raise ValueError(f"Invalid language selection: {result}")
 
 
-def load_document():  
+def load_document():
     """
     Load documents from a given path into the database, and create an index
     for the collection. If the collection already exists, update the index
@@ -290,9 +290,6 @@ def chat_terminal():
         except EOFError:
             console.print("[bold red]Exiting chat...[/bold red]")
             break
-
-
-# 執行聊天終端
 
 
 def show_help():
