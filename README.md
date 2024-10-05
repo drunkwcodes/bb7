@@ -27,6 +27,18 @@ ollama run llama3.2
 pipx install bb7
 ```
 
+If the installation is not working well,
+please install 0.4.1 first, then upgrade to latest.
+
+```
+pipx install bb7=0.4.1
+pipx upgrade bb7
+```
+
+
+
+### Demo
+
 Chat:
 
 ```

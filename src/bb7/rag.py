@@ -110,8 +110,8 @@ def load_index(collection_name: str, db_path: str | None = None):
     return index
 
 
-def ask(query: str, collection_name: str, db_path: str | None = None):
-    llm = Ollama(model="llama3.2", request_timeout=120)
+def ask(query: str, collection_name: str, db_path: str | None = None, model="llama3.2"):
+    llm = Ollama(model=model, request_timeout=120)
     index = load_index(collection_name=collection_name, db_path=db_path)
     query_engine = index.as_query_engine(llm=llm)
 

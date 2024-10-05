@@ -156,6 +156,23 @@ def load_document():
     return doc_collection_name
 
 
+def get_model(conf_file: str):
+    with open(conf_file, "r") as f:
+        doc = parse(f.read())
+
+    return doc["model"]
+
+
+def set_model(conf_file: str, model: str):
+    with open(conf_file, "r") as f:
+        doc = parse(f.read())
+
+    doc["model"] = model
+
+    with open(conf_file, "w") as f:
+        f.write(tomlkit.dumps(doc))
+
+
 def choose_collection():
     collections = Collection.select(Collection.name).order_by(Collection.updated.desc())
 
@@ -171,17 +188,18 @@ def choose_collection():
     return result
 
 
-def normal_chat(chat_history):
+def normal_chat(chat_history, model="llama3.2"):
     try:
         response = ollama.chat(
             # model="llama3.1",
             # model="llama3.2:1b",
-            model="llama3.2",
+            model=model,
             messages=chat_history,
         )
         bot_reply = response["message"]["content"]
     except Exception as e:
         console.print(f"[bold red]Error: {str(e)}[/bold red]")
+        return ""
 
     return bot_reply
 
@@ -214,6 +232,7 @@ def chat_terminal():
     if os.path.exists(conf_file) is False:
         doc = document()
         doc.add("voice_language", "ja")
+        doc.add("model", "llama3.2")
         with open(conf_file, "w") as f:
             tomlkit.dump(doc, f)
 
@@ -260,6 +279,17 @@ def chat_terminal():
                 elif user_input.lower() == "/help":
                     show_help()
                     continue
+
+                elif "/model" in user_input.lower() or "/m" in user_input.lower():
+                    inputs = user_input.split(" ")
+                    if len(inputs) > 1:
+                        model = inputs[1]
+                        set_model(conf_file=conf_file, model=model)
+                    else:
+                        console.print(
+                            "[bold red]Please specify the model you want to use[/bold red]"
+                        )
+                    continue
                 elif "/voice" in user_input.lower() or "/v" in user_input.lower():
                     inputs = user_input.split(" ")
                     if len(inputs) > 1:
@@ -278,10 +308,11 @@ def chat_terminal():
             history.append({"role": "user", "content": user_input})
 
             # 聊天機器人的回覆
+            model = get_model(conf_file)
             if activated != "":  # if activated documents
-                bot_reply = ask(user_input, collection_name=doc_name)
+                bot_reply = ask(user_input, collection_name=doc_name, model=model)
             else:
-                bot_reply = normal_chat(history)
+                bot_reply = normal_chat(history, model=model)
 
             history.append({"role": "assistant", "content": bot_reply})
             console.print(Text(bot_reply, style="bold yellow"))
@@ -301,6 +332,7 @@ def show_help():
     console.print("/activate - Activate a document")
     console.print("/deactivate - Deactivate a document")
     console.print("/load - Load a document")
+    console.print("/model - Select model")
     console.print("/help - Show this help message")
 
 
