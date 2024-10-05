@@ -28,10 +28,10 @@ pipx install bb7
 ```
 
 If the installation is not working well,
-please install 0.4.1 first, then upgrade to latest.
+please install 0.3.3 first, then upgrade to latest.
 
 ```
-pipx install bb7=0.4.1
+pipx install bb7=0.3.3
 pipx upgrade bb7
 ```
 
