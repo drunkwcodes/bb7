@@ -330,7 +330,7 @@ def show_help():
     console.print("/activate - Activate a document")
     console.print("/deactivate - Deactivate a document")
     console.print("/load - Load a document")
-    console.print("/model - Select model")
+    console.print("/model [llama3.2] - Select model")
     console.print("/help - Show this help message")
 
 
