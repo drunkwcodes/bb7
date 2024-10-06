@@ -1,3 +1,8 @@
+# Thanks to Amir Siddiqui
+
+# https://www.youtube.com/watch?v=ApEz291gfBs
+# https://github.com/siddiquiamir/llamaindex/blob/main/RAG%20with%20llama3.1.ipynb
+
 import os
 from datetime import datetime
 

@@ -286,7 +286,9 @@ def chat_terminal():
                         model = inputs[1]
                         set_model(conf_file=conf_file, model=model)
                     else:
-                        print("No model specified. Current model:", get_model(conf_file))
+                        print(
+                            "No model specified. Current model:", get_model(conf_file)
+                        )
                     continue
                 elif "/voice" in user_input.lower() or "/v" in user_input.lower():
                     inputs = user_input.split(" ")
