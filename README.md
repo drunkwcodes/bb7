@@ -72,6 +72,7 @@ Available commands:
 /activate - Activate a document
 /deactivate - Deactivate a document
 /load - Load a document
+/model [llama3.2] - Select a model
 /help - Show this help message
 >> 
 ```
