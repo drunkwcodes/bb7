@@ -17,6 +17,7 @@ from peewee import *
 from platformdirs import user_data_dir
 
 bb7_dir = user_data_dir(appname="bb7", appauthor="drunkwcodes")
+os.makedirs(bb7_dir, exist_ok=True)
 CHROMA_DB_PATH = f"{bb7_dir}/chroma_db"
 
 COLLECTIONS_DB = f"{bb7_dir}/collections.sqlite"
