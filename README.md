@@ -26,6 +26,9 @@ ollama run llama3.2
 ```
 
 ### Installation
+
+[pipx](https://github.com/pypa/pipx)
+
 ```
 pipx install bb7
 ```
@@ -80,4 +83,6 @@ Available commands:
 >> 
 ```
 
-![](selections.png)
+![selecting the TTS language](selections.png)
+![Talking about Linkin Park](talking_about_linkin_park.png)
+![Teaching Japanese](teaching_japanese.png)
