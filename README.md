@@ -16,6 +16,9 @@ First, install ollama
 curl -fsSL https://ollama.com/install.sh | sh
 ```
 
+Windows: https://ollama.com/download/windows
+
+
 And install a model.
 
 ```
