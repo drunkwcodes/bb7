@@ -22,7 +22,7 @@ jobs:
       - name: Lint with Ruff
         run: |
           pip install ruff  
-          ruff --format=github --target-version=py310 .
+          ruff .
         continue-on-error: true
       - name: Test with pytest
         run: |
