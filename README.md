@@ -37,7 +37,7 @@ If the installation is not working well,
 please install 0.3.3 first, then upgrade to latest.
 
 ```
-pipx install bb7=0.3.3
+pipx install bb7==0.3.3
 pipx upgrade bb7
 ```
 
